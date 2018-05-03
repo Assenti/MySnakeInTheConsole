@@ -63,20 +63,22 @@ void Game::play()
 				break;
 			}
 		}
-		if (snakeEatsFood()) 
+		if (snakeEatSelf() || outOfPlayArea())
+		{
+			state = Quit;
+			break;
+		}
+		if (snakeEatsFood())
 		{
 			snake.eat(mouse.getBody());
 			score++;
 			mouse.rebirn();
 		}
-		if (snakeEatSelf() || outOfPlayArea())
-		{
-			state = Quit;
-		}
-		box.draw();
+		
 		snake.move();
 		snake.draw();
 		mouse.draw();
+		box.draw();
 		Sleep(100);
 	}
 	system("cls");
@@ -91,10 +93,9 @@ bool Game::snakeEatsFood()
 
 bool Game::snakeEatSelf()
 {
-	for (int i = 3; i < snake.getBody().size(); i++)
+	for (int i = 1; i < snake.getBody().size(); i++)
 	{
-		if (snake.getBody()[0].getX() == snake.getBody()[i].getX()
-			&& snake.getBody()[0].getY() == snake.getBody()[i].getY())
+		if (snake.getBody()[0] == snake.getBody()[i])
 		{
 			return true;
 		}
@@ -104,15 +105,14 @@ bool Game::snakeEatSelf()
 
 bool Game::outOfPlayArea()
 {
-	if ((snake.getBody()[0].getX() == 0 || snake.getBody()[0].getY() == 0) ||
-		(snake.getBody()[0].getX() == box.getAreaLimit() || snake.getBody()[0].getX() == box.getAreaLimit()))
+	for (Pixel pixel : box.getBody())
 	{
-		return true;
+		if (pixel == snake.getBody()[0])
+		{
+			return true;
+		}
 	}
-	else
-	{
-		return false;
-	}
+	return false;
 }
 
 

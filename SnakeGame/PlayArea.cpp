@@ -3,12 +3,12 @@
 PlayArea::PlayArea()
 {
 	sign = '#';
-	for (int i = 0; i < areaLimit; i++)
+	for (int i = 0; i <= 25; i++)
 	{
 		body.push_back(Pixel(0, i));
 		body.push_back(Pixel(i, 0));
-		body.push_back(Pixel(areaLimit-1, i));
-		body.push_back(Pixel(i, areaLimit-1));
+		body.push_back(Pixel(25, i));
+		body.push_back(Pixel(i, 25));
 	}
 }
 
@@ -16,10 +16,11 @@ PlayArea::~PlayArea()
 {
 }
 
-int PlayArea::getAreaLimit()
+std::vector<Pixel> PlayArea::getBody()
 {
-	return areaLimit;
+	return body;
 }
+
 
 void PlayArea::draw()
 {

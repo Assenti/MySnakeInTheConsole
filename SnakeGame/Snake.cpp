@@ -4,7 +4,6 @@ Snake::Snake()
 {
 	sign = '*';
 	body.push_back(Pixel(5, 5));
-	body.push_back(Pixel(5, 6));
 	direction = Default;
 }
 
@@ -35,6 +34,10 @@ void Snake::move()
 		break;
 	case Right:
 		x = 1;
+		break;
+	case Default:
+		break;
+	default:
 		break;
 	}
 	for (int i = body.size() - 1; i > 0; i--) 

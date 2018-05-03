@@ -19,7 +19,7 @@ void Mouse::draw()
 
 void Mouse::rebirn()
 {
-	body = { rand() % 15 , rand() % 15 };
+	body = { rand() % 23 + 2, rand() % 23 + 2 };
 	for (Pixel & pixel : Game::getInstance().getSnake().getBody())
 	{
 		if (body == pixel)

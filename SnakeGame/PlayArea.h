@@ -7,11 +7,10 @@ class PlayArea
 private:
 	char sign;
 	std::vector<Pixel> body;
-	int areaLimit = 20;
 public:
 	PlayArea();
 	~PlayArea();
-	int getAreaLimit();
+	std::vector<Pixel> getBody();
 	void draw();
 };
 
