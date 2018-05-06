@@ -2,11 +2,16 @@
 #include "Snake.h"
 #include "Mouse.h"
 #include "PlayArea.h"
+#include "Player.h"
+#include <vector>
+#include <fstream>
+#include <iostream>
 
 class Game
 {
 	enum State { Started, Playing, Pause, Quit };
 private:
+	std::vector<Player> players;
 	Snake snake;
 	Mouse mouse;
 	PlayArea box;
@@ -15,14 +20,18 @@ private:
 	bool snakeEatSelf();
 	bool outOfPlayArea();
 	Game();
-	int score;
 public:
 	static Game & getInstance();
-	int getScore();
+	std::vector<Player> getPlayers();
 	Snake getSnake();
 	Mouse getMouse();
 	PlayArea getBox();
+	void addNewPlayer(std::string);
 	void play();
+	void initialize();
+	void writePlayersScoreToFile(Player &);
+	void recordHighScore(Player &);
+	bool isScoreMax(Player &);
 	~Game();
 };
 

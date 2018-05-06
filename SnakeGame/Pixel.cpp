@@ -26,8 +26,11 @@ Pixel::Pixel(short x, short y)
 	this->y = y;
 }
 
-void Pixel::draw(const char & sign)
+void Pixel::draw(const char & sign, int color)
 {
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, color);
+
 	gotoXY(x, y);
 	std::cout << sign;
 }

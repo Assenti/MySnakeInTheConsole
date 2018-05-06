@@ -14,7 +14,7 @@ Pixel Mouse::getBody()
 
 void Mouse::draw()
 {
-	body.draw(sign);
+	body.draw(sign, 13);
 }
 
 void Mouse::rebirn()

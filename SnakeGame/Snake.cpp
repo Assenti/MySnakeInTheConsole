@@ -15,7 +15,7 @@ std::vector<Pixel> Snake::getBody()
 void Snake::draw()
 {
 	for (Pixel pixel : body) {
-		pixel.draw(sign);
+		pixel.draw(sign, 10);
 	}
 }
 

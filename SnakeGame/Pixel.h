@@ -12,7 +12,7 @@ public:
 	short getY();
 	void setY(short);
 	Pixel(short, short);
-	void draw(const char & sign);
+	void draw(const char & sign, int);
 	Pixel();
 	~Pixel();
 	bool operator ==(const Pixel &) const;

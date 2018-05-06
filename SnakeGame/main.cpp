@@ -2,7 +2,7 @@
 
 int main()
 {
-	Game::getInstance().play();
+	Game::getInstance().initialize();
 
 	system("pause");
 	return 0;

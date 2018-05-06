@@ -21,11 +21,10 @@ std::vector<Pixel> PlayArea::getBody()
 	return body;
 }
 
-
 void PlayArea::draw()
 {
 	for (Pixel pixel : body)
 	{
-		pixel.draw(sign);
+		pixel.draw(sign, 9);
 	}
 }
