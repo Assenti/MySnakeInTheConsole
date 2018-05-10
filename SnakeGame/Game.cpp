@@ -3,6 +3,7 @@
 Game::Game()
 {
 	state = Started;
+	speed = 100;
 }
 
 Game::~Game()
@@ -33,6 +34,11 @@ Mouse Game::getMouse()
 PlayArea Game::getBox()
 {
 	return box;
+}
+
+int Game::getSpeed()
+{
+	return speed;
 }
 
 void Game::addNewPlayer(std::string nick_name)
@@ -72,27 +78,32 @@ void Game::play()
 			state = Quit;
 			break;
 		}
-		if (snakeEatsFood())
+		if (snakeEatsMouse())
 		{
 			snake.eat(mouse.getBody());
 			mouse.rebirn();
+			//Speed decreases in 2 units with every eaten mouse
+			speed -= 2;
 		}
 		snake.move();
 		snake.draw();
 		mouse.draw();
-		box.draw();
-		Sleep(100);
+		box.draw();	
+		Sleep(speed);
 	}
 	system("cls");
-	Pixel::gotoXY(5, 5);
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, 15); //return console color to white
+	Pixel::gotoXY(5, 5); //set cursor 
 	std::cout << "GAME OVER! YOUR RESULT: " << snake.getBody().size() - 1 << std::endl;
 	players[0].setScore(snake.getBody().size() - 1);
-	writePlayersScoreToFile(players[0]);
-	if (isScoreMax(players[0]))
+	writePlayersScoreToFile();
+	if (isScoreMax())
 	{
-		recordHighScore(players[0]);
+		recordHighScore();
 		std::cout << "CONGRATULATIONS! YOU HAVE A NEW HIGH SCORE: " << snake.getBody().size() - 1 << std::endl;
 	}
+	showAllPlayersResult();
 }
 
 void Game::initialize()
@@ -104,28 +115,28 @@ void Game::initialize()
 	play();
 }
 
-void Game::writePlayersScoreToFile(Player & p)
+void Game::writePlayersScoreToFile()
 {
 	std::ofstream out("Scores.txt", std::ofstream::out | std::ofstream::app);
-	out << p.getNickName() << ' ' << p.getScore() << '\n';
+	out << players[0].getNickName() << ' ' << players[0].getScore() << '\n';
 	out.close();
 }
 
-void Game::recordHighScore(Player & p)
+void Game::recordHighScore()
 {
 	std::ofstream out("HighScore.txt");
-	out << p.getScore();
+	out << players[0].getScore();
 	out.close();
 }
 
-bool Game::isScoreMax(Player & p)
+bool Game::isScoreMax()
 {
 	std::ifstream in("HighScore.txt");
 	int max_score;
 	in >> max_score;
 	if (in.is_open())
 	{
-		if (p.getScore() > max_score)
+		if (players[0].getScore() > max_score)
 		{
 			return true;
 		}
@@ -140,7 +151,35 @@ bool Game::isScoreMax(Player & p)
 	}
 }
 
-bool Game::snakeEatsFood()
+std::vector<Player> Game::deserializePlayers()
+{
+	std::ifstream in("Scores.txt");
+	std::string nick_name;
+	int score;
+	while (!(in.eof()))
+	{
+		in >> nick_name >> score;
+		if (nick_name != "")
+		{
+			players.push_back(Player(nick_name, score));
+			nick_name = "";
+		}
+	}
+	in.close();
+	return players;
+}
+
+void Game::showAllPlayersResult()
+{
+	deserializePlayers();
+	std::cout << "Players scores:\n";
+	for (int i = 1; i < players.size(); i++)
+	{
+		std::cout << players[i].getNickName() << " " << players[i].getScore() << std::endl;
+	}
+}
+
+bool Game::snakeEatsMouse()
 {
 	return (snake.getBody()[0] == mouse.getBody());
 }

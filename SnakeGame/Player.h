@@ -11,6 +11,7 @@ public:
 	int getScore();
 	void setScore(int);
 	Player(std::string);
+	Player(std::string, int);
 	~Player();
 };
 

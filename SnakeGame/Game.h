@@ -16,22 +16,26 @@ private:
 	Mouse mouse;
 	PlayArea box;
 	State state;
-	bool snakeEatsFood();
+	bool snakeEatsMouse();
 	bool snakeEatSelf();
 	bool outOfPlayArea();
+	void recordHighScore();
+	bool isScoreMax();
 	Game();
+	int speed;
 public:
 	static Game & getInstance();
 	std::vector<Player> getPlayers();
 	Snake getSnake();
 	Mouse getMouse();
 	PlayArea getBox();
+	int getSpeed();
 	void addNewPlayer(std::string);
 	void play();
 	void initialize();
-	void writePlayersScoreToFile(Player &);
-	void recordHighScore(Player &);
-	bool isScoreMax(Player &);
+	void writePlayersScoreToFile();
+	std::vector<Player> deserializePlayers();
+	void showAllPlayersResult();
 	~Game();
 };
 
