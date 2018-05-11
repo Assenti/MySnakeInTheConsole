@@ -54,3 +54,9 @@ void PlayArea::draw()
 		pixel.draw(sign, 9);
 	}
 }
+
+void PlayArea::loadMap(int level)
+{
+	deserializeDataToMap(level);
+	draw();
+}

@@ -32,7 +32,7 @@ public:
 	std::vector<PlayArea> getPlayAreas();
 	void CreatePlayAreas();
 	int getSpeed();
-	void levelLoader(int);
+	void SetLevel(int);
 	void addNewPlayer(std::string);
 	void play();
 	void initialize();

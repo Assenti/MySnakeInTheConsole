@@ -1,5 +1,6 @@
 #include "Mouse.h"
 #include "Game.h"
+#include "PlayArea.h"
 
 Mouse::Mouse()
 {
@@ -17,18 +18,17 @@ void Mouse::draw()
 	body.draw(sign, 13);
 }
 
-void Mouse::rebirn()
+void Mouse::rebirn(short border)
 {
-	body = { rand() % 23 + 2, rand() % 23 + 2 };
+	body = { rand() % (border-2) + 2, rand() % (border - 2) + 2 };
 	for (Pixel & pixel : Game::getInstance().getSnake().getBody())
 	{
 		if (body == pixel)
 		{
-			rebirn();
+			rebirn(border);
 		}
 	}
 }
-
 
 Mouse::~Mouse()
 {

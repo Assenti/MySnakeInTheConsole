@@ -10,7 +10,7 @@ public:
 	Mouse();
 	Pixel getBody();
 	void draw();
-	void rebirn();
+	void rebirn(short);
 	~Mouse();
 };
 

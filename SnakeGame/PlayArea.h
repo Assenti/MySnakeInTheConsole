@@ -14,5 +14,6 @@ public:
 	std::vector<Pixel> getBody();
 	void deserializeDataToMap(int);
 	void draw();
+	void loadMap(int);
 };
 

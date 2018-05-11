@@ -39,7 +39,7 @@ std::vector<PlayArea> Game::getPlayAreas()
 
 void Game::CreatePlayAreas()
 {
-	playAreas.push_back(PlayArea());
+	playAreas.push_back(PlayArea()); //creating 4 level areas
 	playAreas.push_back(PlayArea());
 	playAreas.push_back(PlayArea());
 	playAreas.push_back(PlayArea());
@@ -50,30 +50,22 @@ int Game::getSpeed()
 	return speed;
 }
 
-void Game::levelLoader(int snake_size)
+void Game::SetLevel(int snake_size)
 {
-	if (snake_size <= 4)
-	{
-		playAreas[0].deserializeDataToMap(1);
-		playAreas[0].draw();
-	}
-	else if (snake_size > 4 && snake_size <= 8)
+	if (snake_size > 4 && snake_size <= 8)
 	{
 		level = 2;
-		playAreas[1].deserializeDataToMap(2);
-		playAreas[1].draw();
+		speed = 95;
 	}
 	else if (snake_size > 8 && snake_size <= 16)
 	{
 		level = 3;
-		playAreas[2].deserializeDataToMap(3);
-		playAreas[2].draw();
+		speed = 90;
 	}
 	else if (snake_size > 16)
 	{
 		level = 4;
-		playAreas[3].deserializeDataToMap(4);
-		playAreas[3].draw();
+		speed = 85;
 	}
 }
 
@@ -117,15 +109,16 @@ void Game::play()
 		}
 		if (snakeEatsMouse())
 		{
+			short border = 26 - (level*1.8);
 			snake.eat(mouse.getBody());
-			mouse.rebirn();
-			//Speed decreases in 2 units with every eaten mouse
-			speed -= 2;
+			mouse.rebirn(border);
 		}
 		snake.move();
 		snake.draw();
 		mouse.draw();
-		levelLoader(snake.getBody().size());
+		SetLevel(snake.getBody().size());
+		playAreas[level - 1].loadMap(level);
+
 		Sleep(speed);
 	}
 	system("cls");
@@ -236,48 +229,13 @@ bool Game::snakeEatSelf()
 
 bool Game::outOfPlayArea()
 {
-	switch(level)
+	for (Pixel pixel : playAreas[level - 1].getBody())
 	{
-	case 1:
-		for (Pixel pixel : playAreas[0].getBody())
+		if (pixel == snake.getBody()[0])
 		{
-			if (pixel == snake.getBody()[0])
-			{
-				return true;
-			}
+			return true;
 		}
-		break;
-	case 2:
-		for (Pixel pixel : playAreas[1].getBody())
-		{
-			if (pixel == snake.getBody()[0])
-			{
-				return true;
-			}
-		}
-		break;
-	case 3:
-		for (Pixel pixel : playAreas[2].getBody())
-		{
-			if (pixel == snake.getBody()[0])
-			{
-				return true;
-			}
-		}
-		break;
-	case 4:
-		for (Pixel pixel : playAreas[3].getBody())
-		{
-			if (pixel == snake.getBody()[0])
-			{
-				return true;
-			}
-		}
-		break;
-	default:
-		break;
-	}
-	
+	}	
 	return false;
 }
 
