@@ -14,7 +14,7 @@ private:
 	std::vector<Player> players;
 	Snake snake;
 	Mouse mouse;
-	PlayArea box;
+	std::vector<PlayArea> playAreas;
 	State state;
 	bool snakeEatsMouse();
 	bool snakeEatSelf();
@@ -23,13 +23,16 @@ private:
 	bool isScoreMax();
 	Game();
 	int speed;
+	int level;
 public:
 	static Game & getInstance();
 	std::vector<Player> getPlayers();
 	Snake getSnake();
 	Mouse getMouse();
-	PlayArea getBox();
+	std::vector<PlayArea> getPlayAreas();
+	void CreatePlayAreas();
 	int getSpeed();
+	void levelLoader(int);
 	void addNewPlayer(std::string);
 	void play();
 	void initialize();

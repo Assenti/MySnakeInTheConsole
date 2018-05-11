@@ -12,3 +12,7 @@ Lastplayer 3
 check 2
 smbd 1
 check2 1
+Calvin 11
+Bobby 7
+Hugh 4
+John 4

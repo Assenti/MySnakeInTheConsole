@@ -4,6 +4,7 @@ Game::Game()
 {
 	state = Started;
 	speed = 100;
+	level = 1;
 }
 
 Game::~Game()
@@ -31,14 +32,49 @@ Mouse Game::getMouse()
 	return mouse;
 }
 
-PlayArea Game::getBox()
+std::vector<PlayArea> Game::getPlayAreas()
 {
-	return box;
+	return playAreas;
+}
+
+void Game::CreatePlayAreas()
+{
+	playAreas.push_back(PlayArea());
+	playAreas.push_back(PlayArea());
+	playAreas.push_back(PlayArea());
+	playAreas.push_back(PlayArea());
 }
 
 int Game::getSpeed()
 {
 	return speed;
+}
+
+void Game::levelLoader(int snake_size)
+{
+	if (snake_size <= 4)
+	{
+		playAreas[0].deserializeDataToMap(1);
+		playAreas[0].draw();
+	}
+	else if (snake_size > 4 && snake_size <= 8)
+	{
+		level = 2;
+		playAreas[1].deserializeDataToMap(2);
+		playAreas[1].draw();
+	}
+	else if (snake_size > 8 && snake_size <= 16)
+	{
+		level = 3;
+		playAreas[2].deserializeDataToMap(3);
+		playAreas[2].draw();
+	}
+	else if (snake_size > 16)
+	{
+		level = 4;
+		playAreas[3].deserializeDataToMap(4);
+		playAreas[3].draw();
+	}
 }
 
 void Game::addNewPlayer(std::string nick_name)
@@ -49,6 +85,7 @@ void Game::addNewPlayer(std::string nick_name)
 void Game::play()
 {
 	state = Playing;
+	CreatePlayAreas();
 	while (state == Playing)
 	{
 		system("cls");
@@ -88,7 +125,7 @@ void Game::play()
 		snake.move();
 		snake.draw();
 		mouse.draw();
-		box.draw();	
+		levelLoader(snake.getBody().size());
 		Sleep(speed);
 	}
 	system("cls");
@@ -101,7 +138,8 @@ void Game::play()
 	if (isScoreMax())
 	{
 		recordHighScore();
-		std::cout << "CONGRATULATIONS! YOU HAVE A NEW HIGH SCORE: " << snake.getBody().size() - 1 << std::endl;
+		std::cout << "CONGRATULATIONS! YOU HAVE A NEW HIGH SCORE: "
+			<< snake.getBody().size() - 1 << std::endl;
 	}
 	showAllPlayersResult();
 }
@@ -198,13 +236,48 @@ bool Game::snakeEatSelf()
 
 bool Game::outOfPlayArea()
 {
-	for (Pixel pixel : box.getBody())
+	switch(level)
 	{
-		if (pixel == snake.getBody()[0])
+	case 1:
+		for (Pixel pixel : playAreas[0].getBody())
 		{
-			return true;
+			if (pixel == snake.getBody()[0])
+			{
+				return true;
+			}
 		}
+		break;
+	case 2:
+		for (Pixel pixel : playAreas[1].getBody())
+		{
+			if (pixel == snake.getBody()[0])
+			{
+				return true;
+			}
+		}
+		break;
+	case 3:
+		for (Pixel pixel : playAreas[2].getBody())
+		{
+			if (pixel == snake.getBody()[0])
+			{
+				return true;
+			}
+		}
+		break;
+	case 4:
+		for (Pixel pixel : playAreas[3].getBody())
+		{
+			if (pixel == snake.getBody()[0])
+			{
+				return true;
+			}
+		}
+		break;
+	default:
+		break;
 	}
+	
 	return false;
 }
 
